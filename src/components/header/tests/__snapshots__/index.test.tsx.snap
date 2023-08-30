@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Header snapshot 1`] = `
+<body>
+  <div>
+    <div>
+      Lang
+      :
+      <span
+        style="margin-left: 10px; gap: 5px; display: inline-flex;"
+      >
+        <button
+          disabled=""
+        >
+          en
+        </button>
+        <button>
+          de
+        </button>
+        <button>
+          es
+        </button>
+      </span>
+    </div>
+  </div>
+</body>
+`;

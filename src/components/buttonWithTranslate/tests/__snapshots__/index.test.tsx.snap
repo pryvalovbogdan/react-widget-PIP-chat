@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test ButtonWithTranslate snapshot 1`] = `
+<body>
+  <div>
+    <button
+      style="background-color: red;"
+    >
+      count is 2
+    </button>
+  </div>
+</body>
+`;
