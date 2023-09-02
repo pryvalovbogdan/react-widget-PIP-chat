@@ -1,20 +1,21 @@
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ButtonWithTranslate } from '../../components/buttonWithTranslate';
+import { ButtonWithTranslate } from 'src/components/buttonWithTranslate';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { usePIP } from '../../hooks/usePIP.tsx';
-import { dispatchNotification } from '../../utils.ts';
-import { useSocketIO } from '../../hooks/useSocketIO.tsx';
+import { usePIP, useSocketIO } from 'src/hooks';
+import { dispatchNotification } from 'src/utils.ts';
+import { SOCKET_EVENTS } from 'src/consts.ts';
 
 const Main = () => {
   const [username, setUserName] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState<boolean>(false);
+
   const { t } = useTranslation();
 
   const addMessage = (mes: string) => setMessages(prev => [...prev, mes]);
@@ -25,8 +26,8 @@ const Main = () => {
   const sendMessageHandle = () => {
     const newMessage = t('youMessage', { message });
 
-    socket.emit('new message', message);
-    socket.emit('stop typing');
+    socket.emit(SOCKET_EVENTS.NEW_MESSAGE, message);
+    socket.emit(SOCKET_EVENTS.STOP_TYPING);
 
     // Check is the Document Picture-in-Picture API supported.
     if ('documentPictureInPicture' in window && pipWindow) {
@@ -38,15 +39,16 @@ const Main = () => {
   };
 
   const onInputHandle = () => {
-    socket.emit('typing');
+    socket.emit(SOCKET_EVENTS.TYPING);
     setIsTyping(true);
   };
 
   const logInHandle = () => {
-    socket.emit('add user', username);
+    socket.emit(SOCKET_EVENTS.ADD_USER, username);
   };
 
   const setUserNameHandle = (e: ChangeEvent<HTMLInputElement>) => setUserName(e.target.value);
+  const setMessageHandle = (e: ChangeEvent<HTMLInputElement>) => setMessage(e.target.value);
 
   return (
     <>
@@ -61,7 +63,7 @@ const Main = () => {
           value={message}
           placeholder={t('enterYourMessage')}
           onInput={onInputHandle}
-          onChange={e => setMessage(e.target.value)}
+          onChange={setMessageHandle}
         />
         {isTyping && <span>{t('typing')}</span>}
         <ButtonWithTranslate i18Key='sendMessage' handle={sendMessageHandle} />

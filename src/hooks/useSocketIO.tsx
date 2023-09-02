@@ -2,10 +2,12 @@ import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { toast } from 'react-toastify';
 
-import { dispatchNotification } from '../utils.ts';
 import i18next from '@i18n/i18next.ts';
 
-const socket = io('http://localhost:8000');
+import { dispatchNotification } from '../utils.ts';
+import { HOST_URL, SOCKET_EVENTS, TYPE_MESSAGE } from '../consts.ts';
+
+const socket = io(HOST_URL);
 
 export const useSocketIO = (
   setIsTyping: (isTyping: boolean) => void,
@@ -14,53 +16,49 @@ export const useSocketIO = (
   addMessage: (mes: string) => void,
 ) => {
   useEffect(() => {
-    socket.on('disconnect', reason => {
-      console.log('reason', reason);
-    });
-
-    socket.on('login', data => {
+    socket.on(SOCKET_EVENTS.LOGIN, data => {
       const message = i18next.t('welcomeToChat');
 
       toast(message);
-      dispatchNotification(message, pipWindow, 'JOIN');
+      dispatchNotification(message, pipWindow, TYPE_MESSAGE.JOIN);
       addParticipantsMessage(data);
     });
 
-    socket.on('user joined', data => {
+    socket.on(SOCKET_EVENTS.USER_JOINED, data => {
       const joinMessage = i18next.t('userJoin', { username: data.username });
 
       toast(joinMessage);
-      dispatchNotification(joinMessage, pipWindow, 'JOIN');
+      dispatchNotification(joinMessage, pipWindow, TYPE_MESSAGE.JOIN);
     });
 
-    socket.on('user left', data => {
+    socket.on(SOCKET_EVENTS.USER_LEFT, data => {
       const leftMessage = i18next.t('userLeft', { username: data.username });
 
       toast(leftMessage);
-      dispatchNotification(leftMessage, pipWindow, 'LEAVE');
+      dispatchNotification(leftMessage, pipWindow, TYPE_MESSAGE.LEAVE);
     });
 
-    socket.on('typing', () => {
+    socket.on(SOCKET_EVENTS.TYPING, () => {
       setIsTyping(true);
     });
 
-    socket.on('stop typing', () => {
+    socket.on(SOCKET_EVENTS.STOP_TYPING, () => {
       setIsTyping(false);
     });
 
-    socket.on('disconnect', () => {
+    socket.on(SOCKET_EVENTS.DISCONNECT, () => {
       console.log('you have been disconnected');
     });
 
-    socket.io.on('reconnect', () => {
+    socket.io.on(SOCKET_EVENTS.RECONNECT, () => {
       console.log('you have been reconnected');
     });
 
-    socket.io.on('reconnect_error', () => {
+    socket.io.on(SOCKET_EVENTS.RECONNECT_ERROR, () => {
       console.log('attempt to reconnect has failed');
     });
 
-    socket.on('new message', data => {
+    socket.on(SOCKET_EVENTS.NEW_MESSAGE, data => {
       const newMessage = `${data.username}: ${data.message}`;
 
       dispatchNotification(newMessage, pipWindow);
@@ -68,11 +66,11 @@ export const useSocketIO = (
     });
 
     return () => {
-      socket.off('disconnect');
-      socket.off('login');
-      socket.off('user joined');
-      socket.off('new message');
-      socket.off('user left');
+      socket.off(SOCKET_EVENTS.DISCONNECT);
+      socket.off(SOCKET_EVENTS.LOGIN);
+      socket.off(SOCKET_EVENTS.USER_JOINED);
+      socket.off(SOCKET_EVENTS.NEW_MESSAGE);
+      socket.off(SOCKET_EVENTS.USER_LEFT);
     };
   }, [pipWindow]);
 

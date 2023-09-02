@@ -1,10 +1,12 @@
+import { TYPE_MESSAGE } from './consts.ts';
+
 let isLeft = true;
 
 const getBackGround = (type?: string) => {
   switch (type) {
-    case 'JOIN':
+    case TYPE_MESSAGE.JOIN:
       return 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(252,176,69,1) 100%)';
-    case 'LEAVE':
+    case TYPE_MESSAGE.LEAVE:
       return 'linear-gradient(90deg, rgba(58,0,255,1) 0%, rgba(0,255,179,1) 100%)';
     default:
       return 'linear-gradient(135deg, #73a5ff, #5477f5)';
