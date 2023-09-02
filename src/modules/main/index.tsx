@@ -25,7 +25,7 @@ const Main = () => {
 
   const sendMessageHandle = () => {
     const newMessage = t('youMessage', { message });
-
+    // Emmiting sending message to all users and stoping typing afte it.
     socket.emit(SOCKET_EVENTS.NEW_MESSAGE, message);
     socket.emit(SOCKET_EVENTS.STOP_TYPING);
 
@@ -37,12 +37,12 @@ const Main = () => {
     setMessages([...messages, newMessage]);
     setIsTyping(false);
   };
-
+  // Adding typing where someone starts writing in chat.
   const onInputHandle = () => {
     socket.emit(SOCKET_EVENTS.TYPING);
     setIsTyping(true);
   };
-
+  // Emmiting event for all connected users that current user logged.
   const logInHandle = () => {
     socket.emit(SOCKET_EVENTS.ADD_USER, username);
   };
@@ -67,6 +67,7 @@ const Main = () => {
         />
         {isTyping && <span>{t('typing')}</span>}
         <ButtonWithTranslate i18Key='sendMessage' handle={sendMessageHandle} />
+        {/* Adding chat on general page if PIP window was closed with messages from it. */}
         {!isPIPOpen && (
           <div className='local-chat'>
             {messages.map(item => (

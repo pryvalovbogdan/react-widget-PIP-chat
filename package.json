@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "sudo vite --open",
+    "dev": "vite --open",
     "build": "tsc && vite build",
     "lint": "eslint i18next-react-config --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
