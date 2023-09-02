@@ -1,5 +1,19 @@
 {
-  "notes": "[DE] Notes",
-  "countIs": "[DE] count is {{count}}",
-  "react": "[DE] React"
+  "notes": "[DE]Notes",
+  "countIs": "[DE]count is {{count}}",
+  "react": "[DE]React",
+  "enterYourMessage": "[DE]Enter your message",
+  "pip":"Pip",
+  "typing": "[DE]Typing....",
+  "enterYourName": "[DE]Enter your name",
+  "message": "[DE]Message:",
+  "name": "[DE]Name:",
+  "logInChat": "[DE]Log in Chat",
+  "sendMessage": "[DE]Send message",
+  "welcomeToChat": "[DE]Welcome to Chat",
+  "thereOneParticipant": "[DE]there's 1 participant",
+  "thereAreParticipants": "[DE]there are {{numUsers}} participants",
+  "userLeft": "[DE]{{username}} left",
+  "userJoin": "[DE]{{username}} joined",
+  "youMessage": "[DE]You: {{message}}"
 }

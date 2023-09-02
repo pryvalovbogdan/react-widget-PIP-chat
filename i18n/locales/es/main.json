@@ -1,5 +1,19 @@
 {
-  "notes": "[ES] Notes",
-  "countIs": "[ES] count is {{count}}",
-  "react": "[ES] React"
+  "notes": "[ES]Notes",
+  "countIs": "[ES]count is {{count}}",
+  "react": "[ES]React",
+  "enterYourMessage": "[ES]Enter your message",
+  "pip":"Pip",
+  "typing": "[ES]Typing....",
+  "enterYourName": "[ES]Enter your name",
+  "message": "[ES]Message:",
+  "name": "[ES]Name:",
+  "logInChat": "[ES]Log in Chat",
+  "sendMessage": "[ES]Send message",
+  "welcomeToChat": "[ES]Welcome to Chat",
+  "thereOneParticipant": "[ES]there's 1 participant",
+  "thereAreParticipants": "[ES]there are {{numUsers}} participants",
+  "userLeft": "[ES]{{username}} left",
+  "userJoin": "[ES]{{username}} joined",
+  "youMessage": "[ES]You: {{message}}"
 }

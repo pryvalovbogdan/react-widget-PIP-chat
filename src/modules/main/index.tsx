@@ -15,19 +15,25 @@ const Main = () => {
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState<boolean>(false);
-
   const { t } = useTranslation();
 
-  const { addParticipantsMessage, openDocumentPIP, pipWindow } = usePIP(dispatchNotification);
-  const { socket } = useSocketIO(setIsTyping, pipWindow, addParticipantsMessage);
+  const addMessage = (mes: string) => setMessages(prev => [...prev, mes]);
+
+  const { addParticipantsMessage, openDocumentPIP, pipWindow, isPIPOpen } = usePIP(messages);
+  const { socket } = useSocketIO(setIsTyping, pipWindow, addParticipantsMessage, addMessage);
 
   const sendMessageHandle = () => {
+    const newMessage = t('youMessage', { message });
+
     socket.emit('new message', message);
     socket.emit('stop typing');
-    if (pipWindow) {
-      dispatchNotification(message, pipWindow);
+
+    // Check is the Document Picture-in-Picture API supported.
+    if ('documentPictureInPicture' in window && pipWindow) {
+      dispatchNotification(newMessage, pipWindow);
     }
-    setMessages([...messages, message]);
+
+    setMessages([...messages, newMessage]);
     setIsTyping(false);
   };
 
@@ -59,6 +65,13 @@ const Main = () => {
         />
         {isTyping && <span>{t('typing')}</span>}
         <ButtonWithTranslate i18Key='sendMessage' handle={sendMessageHandle} />
+        {!isPIPOpen && (
+          <div className='local-chat'>
+            {messages.map(item => (
+              <span key={item}>{item}</span>
+            ))}
+          </div>
+        )}
         <ButtonWithTranslate i18Key='pip' handle={openDocumentPIP} />
       </div>
     </>

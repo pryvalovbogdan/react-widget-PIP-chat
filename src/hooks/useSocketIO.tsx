@@ -11,6 +11,7 @@ export const useSocketIO = (
   setIsTyping: (isTyping: boolean) => void,
   pipWindow: any,
   addParticipantsMessage: (data: { numUsers: number }) => void,
+  addMessage: (mes: string) => void,
 ) => {
   useEffect(() => {
     socket.on('disconnect', reason => {
@@ -60,7 +61,10 @@ export const useSocketIO = (
     });
 
     socket.on('new message', data => {
-      dispatchNotification(data.message, pipWindow);
+      const newMessage = `${data.username}: ${data.message}`;
+
+      dispatchNotification(newMessage, pipWindow);
+      addMessage(newMessage);
     });
 
     return () => {

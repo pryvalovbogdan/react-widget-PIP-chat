@@ -12,7 +12,7 @@ const getBackGround = (type?: string) => {
 };
 
 export function dispatchNotification(text: string, pipWindow?: any, type?: string) {
-  const wrapper = pipWindow.document.body.querySelector('.toast-wrapper');
+  const wrapper = pipWindow?.document.body.querySelector('.toast-wrapper');
   const message = document.createElement('div');
 
   message.className = 'toast';
@@ -21,6 +21,8 @@ export function dispatchNotification(text: string, pipWindow?: any, type?: strin
   message.style.background = getBackGround(type);
   isLeft = !isLeft;
 
-  wrapper.appendChild(message);
-  pipWindow.document.body.scrollTop = wrapper.scrollHeight;
+  if (wrapper) {
+    wrapper.appendChild(message);
+    pipWindow.document.body.scrollTop = wrapper.scrollHeight;
+  }
 }

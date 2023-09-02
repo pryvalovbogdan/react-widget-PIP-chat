@@ -14,5 +14,6 @@
   "thereOneParticipant": "there's 1 participant",
   "thereAreParticipants": "there are {{numUsers}} participants",
   "userLeft": "{{username}} left",
-  "userJoin": "{{username}} joined"
+  "userJoin": "{{username}} joined",
+  "youMessage": "You: {{message}}"
 }

@@ -1,14 +1,25 @@
 import { toast } from 'react-toastify';
+import { useState } from 'react';
+
 import i18next from '@i18n/i18next.ts';
+import { dispatchNotification } from '../utils.ts';
 
 let pipWindow: any;
 
-export const usePIP = (dispatchNotification: any) => {
+export const usePIP = (messages: string[]) => {
+  const [isPIPOpen, setIsPIPOpen] = useState<boolean>(false);
+
   const openDocumentPIP = async () => {
+    setIsPIPOpen(true);
     // Open a Picture-in-Picture window.
     pipWindow = await window.documentPictureInPicture.requestWindow({
       width: 500,
       height: 500,
+    });
+
+    // Handle closing PIP window
+    pipWindow.addEventListener('pagehide', () => {
+      setIsPIPOpen(false);
     });
 
     // Copy style sheets over from the initial document
@@ -31,11 +42,14 @@ export const usePIP = (dispatchNotification: any) => {
       }
     });
 
-    // Insert element into the Picture-in-Picture window.
+    // Creating wrapper for chat
     const wrapper = document.createElement('div');
-
     wrapper.className = 'toast-wrapper';
+
+    // Insert element into the Picture-in-Picture window.
     pipWindow.document.body.appendChild(wrapper);
+
+    messages.forEach(item => dispatchNotification(item, pipWindow));
   };
 
   const addParticipantsMessage = (data: { numUsers: number }) => {
@@ -50,5 +64,5 @@ export const usePIP = (dispatchNotification: any) => {
     dispatchNotification(message, pipWindow, 'JOIN');
   };
 
-  return { pipWindow, openDocumentPIP, addParticipantsMessage };
+  return { pipWindow, openDocumentPIP, addParticipantsMessage, isPIPOpen };
 };
