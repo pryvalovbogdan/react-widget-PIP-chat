@@ -26,6 +26,9 @@
       "@i18n/*": [
         "i18n/*"
       ],
+      "src/*": [
+        "src/*"
+      ],
       "@jestUtils/*": [
         "src/jestUtils/*"
       ]

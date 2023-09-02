@@ -1,5 +1,19 @@
 {
   "notes": "Notes",
   "count": "count is {{count}}",
-  "react": "React"
+  "react": "React",
+  "enterYourMessage": "Enter your message",
+  "pip":"Pip",
+  "typing": "Typing....",
+  "enterYourName": "Enter your name",
+  "message": "Message:",
+  "name": "Name:",
+  "logInChat": "Log in Chat",
+  "sendMessage": "Send message",
+  "welcomeToChat": "Welcome to Chat",
+  "thereOneParticipant": "there's 1 participant",
+  "thereAreParticipants": "there are {{numUsers}} participants",
+  "userLeft": "{{username}} left",
+  "userJoin": "{{username}} joined",
+  "youMessage": "You: {{message}}"
 }

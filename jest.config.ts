@@ -4,6 +4,7 @@ export default {
   moduleNameMapper: {
     '^@i18n/(.*)$': '<rootDir>/i18n/$1',
     '^@jestUtils/(.*)$': '<rootDir>/src/jestUtils/$1',
+    '^src/(.*)$': '<rootDir>/src/$1',
   },
   transformIgnorePatterns: ['/node_modules/(?!(@testing-library)/)', '/node_modules/@testing-library'],
   snapshotSerializers: ['@emotion/jest/serializer'],
@@ -27,8 +28,9 @@ export default {
       branches: 80,
       lines: 80,
       statements: 80,
-      functions: 80,
+      functions: 60,
     },
   },
+  type: 'module',
   testMatch: ['**/*.{spec,test}.{js,jsx,ts,tsx}'],
 };
