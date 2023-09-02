@@ -11,11 +11,10 @@ import { dispatchNotification } from '../../utils.ts';
 import { useSocketIO } from '../../hooks/useSocketIO.tsx';
 
 const Main = () => {
-  const [count, setCount] = useState(0);
-  const [username, setUserName] = useState('');
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<any>([]);
-  const [isTyping, setIsTyping] = useState(false);
+  const [username, setUserName] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
+  const [messages, setMessages] = useState<string[]>([]);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
 
   const { t } = useTranslation();
 
@@ -47,22 +46,20 @@ const Main = () => {
     <>
       <ToastContainer />
       <h1>{t('react')}</h1>
-      <div className='card' style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        Enter your name: <input onChange={setUserNameHandle} value={username} placeholder='name' />
-        <button onClick={logInHandle}>Log in Chat</button>
-        Write message:{' '}
+      <div className='card'>
+        {t('name')}
+        <input onChange={setUserNameHandle} value={username} placeholder={t('enterYourName')} />
+        <ButtonWithTranslate i18Key='logInChat' handle={logInHandle} />
+        {t('message')}
         <input
           value={message}
-          placeholder='message'
+          placeholder={t('enterYourMessage')}
           onInput={onInputHandle}
           onChange={e => setMessage(e.target.value)}
         />
-        {isTyping && <span>Typing....</span>}
-        <button onClick={sendMessageHandle}>Send message</button>
-        <ButtonWithTranslate i18Key='count' handle={() => setCount(count => count + 1)} i18Value={count} />
-        <button id='button' onClick={openDocumentPIP}>
-          Pip
-        </button>
+        {isTyping && <span>{t('typing')}</span>}
+        <ButtonWithTranslate i18Key='sendMessage' handle={sendMessageHandle} />
+        <ButtonWithTranslate i18Key='pip' handle={openDocumentPIP} />
       </div>
     </>
   );

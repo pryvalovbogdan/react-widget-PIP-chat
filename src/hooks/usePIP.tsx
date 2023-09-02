@@ -1,13 +1,18 @@
 import { toast } from 'react-toastify';
+import i18next from '@i18n/i18next.ts';
 
 let pipWindow: any;
 
 export const usePIP = (dispatchNotification: any) => {
   const openDocumentPIP = async () => {
     // Open a Picture-in-Picture window.
-    // @ts-ignore
-    pipWindow = await documentPictureInPicture.requestWindow();
+    pipWindow = await window.documentPictureInPicture.requestWindow({
+      width: 500,
+      height: 500,
+    });
 
+    // Copy style sheets over from the initial document
+    // so that the player looks the same.
     [...document.styleSheets].forEach(styleSheet => {
       try {
         const cssRules = [...styleSheet.cssRules].map(rule => rule.cssText).join('');
@@ -20,10 +25,8 @@ export const usePIP = (dispatchNotification: any) => {
 
         link.rel = 'stylesheet';
         link.type = styleSheet.type;
-        // @ts-ignore
-        link.media = styleSheet.media;
-        // @ts-ignore
-        link.href = styleSheet.href;
+        link.media = styleSheet.media as unknown as string;
+        link.href = styleSheet.href as unknown as string;
         pipWindow.document.head.appendChild(link);
       }
     });
@@ -35,17 +38,15 @@ export const usePIP = (dispatchNotification: any) => {
     pipWindow.document.body.appendChild(wrapper);
   };
 
-  const addParticipantsMessage = (data: any) => {
+  const addParticipantsMessage = (data: { numUsers: number }) => {
     let message = '';
     if (data.numUsers === 1) {
-      message += `there's 1 participant`;
+      message += i18next.t('thereOneParticipant');
     } else {
-      message += `there are ${data.numUsers} participants`;
+      message += i18next.t('thereAreParticipants', { numUsers: data.numUsers });
     }
 
     toast(message);
-    console.log(message);
-
     dispatchNotification(message, pipWindow, 'JOIN');
   };
 
