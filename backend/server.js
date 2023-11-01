@@ -3,15 +3,34 @@ import path, { dirname } from 'path';
 import http from 'http';
 import { fileURLToPath } from 'url';
 import { Server } from 'socket.io';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import subdomain from 'express-subdomain';
 
 const app = express();
+
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  }),
+);
+
+const mySubdomainRouter = express.Router();
+app.use(subdomain('spiderman', mySubdomainRouter));
+
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: '*',
   },
 });
-const port = process.env.PORT || 8000;
+const port = 8000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -23,6 +42,19 @@ server.listen(port, () => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 let numUsers = 0;
+// Creating custom proxy to unblock iframe streaming subdomain
+app.get('/proxy', async (req, res) => {
+  const targetUrl = 'https://spiderman.localhost:5173'; // or wherever
+
+  try {
+    const response = await fetch(targetUrl);
+    const body = await response.text();
+
+    res.send(body);
+  } catch (error) {
+    res.status(500).send('Error occurred');
+  }
+});
 
 io.on('connection', socket => {
   let addedUser = false;
@@ -73,5 +105,25 @@ io.on('connection', socket => {
         numUsers: numUsers,
       });
     }
+  });
+
+  socket.on('offer', data => {
+    socket.broadcast.emit('offer', data);
+  });
+
+  socket.on('answer', data => {
+    socket.broadcast.emit('answer', data);
+  });
+
+  socket.on('ice-candidate', data => {
+    socket.broadcast.emit('ice-candidate', data);
+  });
+
+  socket.on('send-canvas-data', data => {
+    socket.broadcast.emit('receive-canvas-data', data);
+  });
+
+  socket.on('stop-streaming-canvas', () => {
+    socket.broadcast.emit('stop-streaming-canvas');
   });
 });

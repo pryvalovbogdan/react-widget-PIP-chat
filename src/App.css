@@ -116,3 +116,7 @@ input:disabled {
   padding: 10px;
 }
 
+body{
+  display: flex;
+  flex-direction: column;
+}

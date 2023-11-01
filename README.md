@@ -10,6 +10,13 @@
 
 ## Installation:
 
+### First of all generate openssl certificate to be able to use https protocole on localhost
+
+```bash
+openssl req -x509 -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost' -keyout localhost-privkey.pem -out localhost-cert.pem
+```
+
+### Then install dependencies.
 ```bash
 yarn install
 ```
