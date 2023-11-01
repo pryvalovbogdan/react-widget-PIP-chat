@@ -144,3 +144,6 @@ dist-ssr
 *.sln
 *.sw?
 
+localhost-cert.pem
+localhost-privkey.pem
+
