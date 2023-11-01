@@ -1,0 +1,10 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.canvas-wrapper {
+    max-width: 556px;
+    max-height: 556px;
+    overflow: auto;
+}

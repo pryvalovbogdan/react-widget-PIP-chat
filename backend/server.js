@@ -42,9 +42,9 @@ server.listen(port, () => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 let numUsers = 0;
-// creating custom proxy to unblock iframe streaming subdomain
+// Creating custom proxy to unblock iframe streaming subdomain
 app.get('/proxy', async (req, res) => {
-  const targetUrl = 'http://spiderman.localhost:5173'; // or wherever
+  const targetUrl = 'https://spiderman.localhost:5173'; // or wherever
 
   try {
     const response = await fetch(targetUrl);
@@ -120,13 +120,10 @@ io.on('connection', socket => {
   });
 
   socket.on('send-canvas-data', data => {
-    console.log('Received canvas data');
     socket.broadcast.emit('receive-canvas-data', data);
   });
 
-  socket.on('stop-streaming-canvas', data => {
-    console.log('stop stream canvas');
-
-    socket.broadcast.emit('stop-streaming-canvas', data);
+  socket.on('stop-streaming-canvas', () => {
+    socket.broadcast.emit('stop-streaming-canvas');
   });
 });
