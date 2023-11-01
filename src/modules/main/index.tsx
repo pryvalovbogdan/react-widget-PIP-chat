@@ -10,6 +10,8 @@ import { usePIP, useSocketIO } from 'src/hooks';
 import { dispatchNotification } from 'src/utils.ts';
 import { SOCKET_EVENTS } from 'src/consts.ts';
 
+import CanvasComponent from 'src/modules/main/CanvasComponent.tsx';
+
 const Main = () => {
   const [username, setUserName] = useState<string>('');
   const [message, setMessage] = useState<string>('');
@@ -50,10 +52,23 @@ const Main = () => {
   const setUserNameHandle = (e: ChangeEvent<HTMLInputElement>) => setUserName(e.target.value);
   const setMessageHandle = (e: ChangeEvent<HTMLInputElement>) => setMessage(e.target.value);
 
+  const isHost = localStorage.getItem('isHost');
+
   return (
     <>
       <ToastContainer />
       <h1>{t('react')}</h1>
+      {isHost && (
+        <img
+          src={
+            'https://images.hindustantimes.com/rf/image_size_630x354/HT/p2/2020/06/04/Pictures/spiderman-3-2007_4e232eb0-a640-11ea-ad77-c76040589f9e.jpg'
+          }
+          alt='Tobey Maguire'
+          height='200px'
+          crossOrigin='anonymous'
+          // If we want to stream image we have to add crossOrigin='anonymous' for
+        ></img>
+      )}
       <div className='card'>
         {t('name')}
         <input onChange={setUserNameHandle} value={username} placeholder={t('enterYourName')} />
@@ -75,7 +90,11 @@ const Main = () => {
             ))}
           </div>
         )}
+        {/*<StreamingCanvas />*/}
         <ButtonWithTranslate i18Key='pip' handle={openDocumentPIP} />
+
+        {/*<Test socket={socket} />*/}
+        <CanvasComponent socket={socket} />
       </div>
     </>
   );

@@ -7,7 +7,12 @@ import i18next from '@i18n/i18next.ts';
 import { dispatchNotification } from '../utils.ts';
 import { HOST_URL, SOCKET_EVENTS, TYPE_MESSAGE } from '../consts.ts';
 
-const socket = io(HOST_URL);
+const socket = io(HOST_URL, {
+  reconnection: true,
+  reconnectionAttempts: 10,
+  reconnectionDelay: 2000, // Starts with 2 sec delay, then increases
+  reconnectionDelayMax: 10000, // Max delay is 10 sec
+});
 
 export const useSocketIO = (
   setIsTyping: (isTyping: boolean) => void,
